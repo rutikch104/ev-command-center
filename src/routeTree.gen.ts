@@ -14,6 +14,7 @@ import { Route as AppRouteImport } from './routes/app'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppHomeRouteImport } from './routes/app.home'
 import { Route as AppBatteriesIndexRouteImport } from './routes/app.batteries.index'
+import { Route as AppBatteriesIdRouteImport } from './routes/app.batteries.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,18 +41,25 @@ const AppBatteriesIndexRoute = AppBatteriesIndexRouteImport.update({
   path: '/batteries/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppBatteriesIdRoute = AppBatteriesIdRouteImport.update({
+  id: '/batteries/$id',
+  path: '/batteries/$id',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/app/home': typeof AppHomeRoute
   '/app/': typeof AppIndexRoute
+  '/app/batteries/$id': typeof AppBatteriesIdRoute
   '/app/batteries/': typeof AppBatteriesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/app/home': typeof AppHomeRoute
   '/app': typeof AppIndexRoute
+  '/app/batteries/$id': typeof AppBatteriesIdRoute
   '/app/batteries': typeof AppBatteriesIndexRoute
 }
 export interface FileRoutesById {
@@ -60,14 +68,28 @@ export interface FileRoutesById {
   '/app': typeof AppRouteWithChildren
   '/app/home': typeof AppHomeRoute
   '/app/': typeof AppIndexRoute
+  '/app/batteries/$id': typeof AppBatteriesIdRoute
   '/app/batteries/': typeof AppBatteriesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/app' | '/app/home' | '/app/' | '/app/batteries/'
+  fullPaths:
+    | '/'
+    | '/app'
+    | '/app/home'
+    | '/app/'
+    | '/app/batteries/$id'
+    | '/app/batteries/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/app/home' | '/app' | '/app/batteries'
-  id: '__root__' | '/' | '/app' | '/app/home' | '/app/' | '/app/batteries/'
+  to: '/' | '/app/home' | '/app' | '/app/batteries/$id' | '/app/batteries'
+  id:
+    | '__root__'
+    | '/'
+    | '/app'
+    | '/app/home'
+    | '/app/'
+    | '/app/batteries/$id'
+    | '/app/batteries/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -112,18 +134,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppBatteriesIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/batteries/$id': {
+      id: '/app/batteries/$id'
+      path: '/batteries/$id'
+      fullPath: '/app/batteries/$id'
+      preLoaderRoute: typeof AppBatteriesIdRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
   AppHomeRoute: typeof AppHomeRoute
   AppIndexRoute: typeof AppIndexRoute
+  AppBatteriesIdRoute: typeof AppBatteriesIdRoute
   AppBatteriesIndexRoute: typeof AppBatteriesIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppHomeRoute: AppHomeRoute,
   AppIndexRoute: AppIndexRoute,
+  AppBatteriesIdRoute: AppBatteriesIdRoute,
   AppBatteriesIndexRoute: AppBatteriesIndexRoute,
 }
 
